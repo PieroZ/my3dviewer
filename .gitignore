@@ -1,0 +1,10 @@
+# Ignore virtual environment folders
+my3dviewer_venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.DS_Store
+.env
