@@ -1,0 +1,66 @@
+<!-- viewer/view_objs.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Models</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <h1>3D Models</h1>
+    <div id="container"></div>
+
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/OBJLoader.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('container');
+
+            // Set up the scene
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Add a light
+            const light = new THREE.PointLight(0xffffff);
+            light.position.set(10, 10, 10);
+            scene.add(light);
+
+            // Load OBJ file and add it to the scene
+            function loadObj(url) {
+                const loader = new THREE.OBJLoader();
+                loader.load(url, function (object) {
+                    scene.add(object);
+                    object.position.set(0, 0, 0);  // Adjust the position as needed
+                });
+            }
+
+            // Function to render the scene
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Fetch and load the model data from the server
+            fetch('/viewer/objs/')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(model => {
+                        const url = model.file_url;
+                        loadObj(url);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

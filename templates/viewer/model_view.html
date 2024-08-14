@@ -1,0 +1,20 @@
+<!-- templates/viewer/model_view.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Model Viewer</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div id="model"></div>
+    <script type="text/javascript">
+        // Pass the selected model to main.js
+         console.log('ALE SUPER ');
+        const selectedModel = "{{ selected_model }}";
+        window.selectedModel = selectedModel; // Ensure it's accessible in main.js
+    </script>
+    <script src="{% static 'js/main.js' %}" type="module"></script>
+</body>
+</html>
