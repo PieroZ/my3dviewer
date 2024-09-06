@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+{% extends "viewer/base.html"%}
 {% load static %}
+ {% block content %}
 <html>
 <head>
     <title>3D Model Viewer</title>
@@ -8,18 +9,27 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <!-- Dropdown to select model -->
     <div>
-        <label for="model-select">Select Model:</label>
+<h1 class="text-info">Select a Prim</h1>
+        <label for="model-select" class="text-info">Select Model:</label>
         <select id="model-select">
             <!-- Options will be added here dynamically -->
         </select>
     </div>
 
-    <!-- Container for the 3D model -->
+    <div>
+        <label for="light-slider" class="text-info">Ambient Light Intensity:</label>
+        <input type="range" id="light-slider" min="0" max="10" step="0.1" value="1">
+        <span id="light-value" class="text-info">1</span>
+    </div>
+
+    <div id="model-images"></div>
+
     <div id="model"></div>
 
-    <!-- Include JavaScript with type module -->
+
+
     <script src="{% static 'js/main.js' %}" type="module"></script>
 </body>
 </html>
+{% endblock %}

@@ -34,6 +34,38 @@ def index(request):
     return render(request, 'viewer/index.html')
 
 
+def animation_preview(request):
+    static_dir = settings.STATICFILES_DIRS[0]  # Get the static directory path
+    animations_dir = os.path.join(static_dir, 'animations/')
+
+    # Handle the case where the directory might not exist
+    if not os.path.exists(animations_dir):
+        return render(request, 'viewer/animation_viewer.html', {'animations': []})
+
+    # Get the top-level categories
+    animations = [d for d in os.listdir(animations_dir) if os.path.isdir(os.path.join(animations_dir, d))]
+
+    # Create a dictionary with categories as keys and their subdirectories as values
+    animation_models = {}
+    for animation in animations:
+        sub_dir = os.path.join(animations_dir, animation)
+        sub_dirs = [d for d in os.listdir(sub_dir) if os.path.isdir(os.path.join(sub_dir, d))]
+        animation_models[animation] = sub_dirs
+
+    # # Example data: You can retrieve this from your database or define it statically
+    # categories = ['Technology', 'Science', 'Art', 'Music', 'Literature']
+    #
+    # # Add the categories to the context dictionary
+    # context = {
+    #     'categories': categories
+    # }
+
+
+    # print(f"animation_models={animation_models}")
+    # print(f"animations={animations}")
+    return render(request, 'viewer/animation_viewer.html', {'animations': animations, 'animation_models': animation_models})
+
+
 def model_dropdown(request):
     if not settings.STATICFILES_DIRS:
         return render(request, 'viewer/dropdown.html', {'models': []})
@@ -74,3 +106,12 @@ def get_model_names(request):
 
     return JsonResponse({'models': models})
 
+
+def model_images(request, model_name):
+    model_dir = os.path.join(settings.STATICFILES_DIRS[0], 'models', 'prototype', model_name)
+    print('yeyeye')
+    if os.path.exists(model_dir):
+        png_files = [f for f in os.listdir(model_dir) if f.endswith('.png')]
+        print(png_files)
+        return JsonResponse({'images': png_files})
+    return JsonResponse({'images': []})

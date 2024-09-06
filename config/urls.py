@@ -23,8 +23,9 @@ from viewer import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('viewer/', views.index, name='index'),
     re_path(r'^viewer/', include('viewer.urls')),
+    re_path(r'^$', views.index, name='index'),
+    re_path(r'^animation_preview/', views.animation_preview, name='animation_preview'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
